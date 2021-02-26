@@ -3,59 +3,54 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  const [cryptoName, setCryptoName] = useState();
-  const [cryptoInfo, setCryptoInfo] = useState("nada");
+  const [infoBtc, setInfoBtc] = useState(false);
+  const [infoEth, setInfoEth] = useState(false);
 
-  function handleChange(event) {
-    setCryptoName(event.target.value);
+  useEffect(() => {
+    axios.get(`https://www.mercadobitcoin.net/api/BTC/ticker/`).then((res) => {
+      const infos = res.data;
+      setInfoBtc(infos);
+    });
+    axios.get(`https://www.mercadobitcoin.net/api/ETH/ticker/`).then((res) => {
+      const infos = res.data;
+      setInfoEth(infos);
+    });
+  }, []);
+
+  function toBr(num) {
+    return num.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
   }
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://www.mercadobitcoin.net/api/${cryptoName}/ticker/`)
-  //     .then((res) => {
-  //       const infos = res.data;
-  //       setCryptoInfo(infos);
-  //     });
-  // }, [cryptoName]);
-
-  //TEST
 
   return (
     <>
-      <label>
-        <select value={cryptoName} onChange={handleChange}>
-          <option value="BTC">Bitcoin</option>
-          <option value="kkk">kkk</option>
-          <option value="coco">Coco</option>
-          <option value="manga">Manga</option>
-        </select>
-      </label>
-      <br />
-      <button
-        onClick={() => {
-          setCryptoInfo({
-            ticker: {
-              high: 14481.47,
-              low: 13706.00002,
-              vol: 443.73564488,
-              last: 14447.01,
-              buy: 14447.001,
-              sell: 14447.01,
-              date: 1502977646,
-            },
-          });
-          console.log("o--->", cryptoInfo.ticker);
-        }}
-      >
-        oo
-      </button>
-      <br />
-
-      <p>high: </p>
-      <p></p>
-      <p></p>
-      <p></p>
+      <div className="btc">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/2000px-BTC_Logo.svg.png" 
+        style={{width: "100px"}}
+        />
+        {infoBtc && (
+          <>
+            <p>
+              <strong>Buy:</strong> {toBr(infoBtc.ticker.buy)}
+            </p>
+            <p>
+              <strong>High</strong> {toBr(infoBtc.ticker.high)}
+            </p>
+            <p>
+              <strong>Low</strong> {toBr(infoBtc.ticker.low)}
+            </p>
+          </>
+        )}
+      </div>
+      <div>
+        ETH:
+        {infoEth && (
+          <>
+            <p>Buy: {infoEth.ticker.buy}</p>
+            <p>high: {infoEth.ticker.high}</p>
+            <p>Low: {infoEth.ticker.low}</p>
+          </>
+        )}
+      </div>
     </>
   );
 }

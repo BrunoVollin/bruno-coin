@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.btc {
+  width: 250px;
+  height: 300px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 51px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  margin: 30px;
+}
+
+p{
+  font-size: large;
+}
